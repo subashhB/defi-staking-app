@@ -65,7 +65,7 @@ contract('DecentralBank', ([owner, customer]) => {
         it('Transfer Tokens', async() =>{
             //Checking Staking for the Customer
             await tether.approve(decentralBank.address, tokens('10'), {from: customer});
-            await decentralBank.depositeTokens(tokens('10'))
+            await decentralBank.depositeTokens(tokens('10'),{from: customer});
         })
 
     })
