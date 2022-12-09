@@ -20,9 +20,9 @@ contract DecentralBank{
         rwd = _rwd;
     }
 
-    function depositeTokens(uint256 _amount) public{
+    function depositeTokens(uint _amount) public{
         //Staking amount should be greater than zero
-        require(_amount > 0, 'Amount cannot be Zero');
+        require(_amount > 0);
 
         //Transfer the Tether into this address for staking
         tether.transferFrom(msg.sender, address(this), _amount);
