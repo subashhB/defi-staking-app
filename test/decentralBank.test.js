@@ -1,4 +1,5 @@
 const { assert } = require('chai');
+const { debug } = require('console');
 
 const Tether = artifacts.require('Tether');
 const RWD = artifacts.require('RWD');
@@ -13,7 +14,7 @@ contract('DecentralBank', ([owner, customer]) => {
 
     let tether, rwd, decentralBank;
 
-    tokens = (number) => web3.utils.toWei(number, 'ether');
+    tokens = (number) => web3.utils.toWei(number,'ether');
 
     before(async () => {
         //Load contracts
@@ -25,7 +26,7 @@ contract('DecentralBank', ([owner, customer]) => {
         await rwd.transfer(decentralBank.address, tokens('1000000'))
 
         //Transfer the 100 Tether to the first account
-        await tether.transfer(customer, tokens('100'), {from: owner})
+        await tether.transfer(customer, tokens('100', {from: owner}))
     }) 
 
     describe('Tether Token Deployment', async () => {
@@ -64,8 +65,8 @@ contract('DecentralBank', ([owner, customer]) => {
 
         it('Transfer Tokens', async() =>{
             //Checking Staking for the Customer
-            await tether.approve(decentralBank.address, tokens('10'), {from: customer});
-            await decentralBank.depositeTokens(tokens('10'),{from: customer});
+            await tether.approve(decentralBank.address, tokens('100'), {from: customer})
+            await decentralBank.depositTokens(tokens('100'),{from: customer});
         })
 
     })

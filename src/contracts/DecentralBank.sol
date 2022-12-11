@@ -12,17 +12,17 @@ contract DecentralBank{
     address[] public stakers;
 
     mapping(address => uint) public stakingBalance;
-    mapping(address =>bool) public hasStaked;
+    mapping(address => bool) public hasStaked;
     mapping(address => bool) public isStaking;
     
-    constructor(Tether _tether, RWD _rwd) public {
+    constructor(RWD _rwd, Tether _tether) public {
         tether = _tether;
         rwd = _rwd;
     }
 
-    function depositeTokens(uint _amount) public{
+    function depositTokens(uint256 _amount) public {
         //Staking amount should be greater than zero
-        require(_amount > 0);
+        require(_amount > 0, "Amount cannot be less than zero");
 
         //Transfer the Tether into this address for staking
         tether.transferFrom(msg.sender, address(this), _amount);

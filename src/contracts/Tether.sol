@@ -19,13 +19,13 @@ contract Tether{
     );
 
     mapping (address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
+    mapping(address => mapping (address => uint256)) public allowance;
 
     constructor() public{
         balanceOf[msg.sender] = totalSupply;
     }
 
-    function transfer (address _to, uint256 _value) public returns(bool success){
+    function transfer (address _to, uint256 _value) public returns (bool success){
         //It is required that the account of the sender has value greater than or equal to the _value.
         require(balanceOf[msg.sender] >= _value);
         //Transfering the amount from the sender and subtracting the amount
@@ -36,24 +36,22 @@ contract Tether{
         return true;
     }
 
-    function approve(address _spender, uint256 _value) public returns(bool success){
+    function approve(address _spender, uint256 _value) public returns (bool success){
         allowance[msg.sender][_spender] = _value;
         emit Approved(msg.sender, _spender, _value);
         return true;
     }
 
-    function transferFrom(address _from, address _to, uint256 _value) public returns(bool success){
+    function transferFrom(address _from, address _to, uint256 _value) public returns(bool){
         require(_value <= balanceOf[_from]);
-        require(_value <= allowance[_from][msg.sender] );
-
-        //Reduce the value which is transferred
-        balanceOf[_from] -= _value;
+        require(_value <= allowance[_from][msg.sender]);
 
         //Add the value to the transferred account
         balanceOf[_to] += _value;
-        allowance[_from][msg.sender] -= _value;
+        //Reduce the value which is transferred
+        balanceOf[_from] -= _value;
+        allowance[msg.sender][_from] -= _value;
         emit Transfer(_from, _to, _value);
         return true;
-
     }
 }
