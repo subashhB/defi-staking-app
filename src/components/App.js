@@ -30,7 +30,7 @@ class App extends Component{
     constructor(props){
         super(props)
         this.state = {
-            account: '0xA'
+            account: '0xAjbajnd'
         }
     }
     //React Code
