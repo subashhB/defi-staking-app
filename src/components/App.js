@@ -50,7 +50,7 @@ class App extends Component{
             const rwd = new web3.eth.Contract(RWD.abi, rwdData.address)
             this.setState({rwd})
             let rwdBalance = await rwd.methods.balanceOf(this.state.account).call()
-            this.setState({rwdBalance: rwdBalance.toString})
+            this.setState({rwdBalance: rwdBalance.toString() })
             
         }
         else{
@@ -87,6 +87,8 @@ class App extends Component{
     }
     //React Code
     render(){
+        let content
+        {this.state.loading ? content = <p id='loader' className='text-center' style={{margin:'30px'}}>LOADING...</p>: content = <Main tetherBalance ={this.state.tetherBalance} rwdBalance ={this.state.rwdBalance} stakingBalance ={this.state.stakingBalance} />}
         return(
             <div>
                 <Navbar account={this.state.account}/>
@@ -94,7 +96,7 @@ class App extends Component{
                     <div className="row">
                         <main role='main' className='col-lg-12 ml-auto mr-auto' style={{maxWidth: '600px', minHeight:'100vm'}}>
                             <div>
-                                <Main/>
+                                {content}
                             </div>
                         </main>
                     </div>
