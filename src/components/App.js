@@ -5,9 +5,10 @@ import Tether from '../truffle_abis/Tether.json';
 import RWD from '../truffle_abis/RWD.json';
 import DecentralBank from '../truffle_abis/DecentralBank.json';
 import Main from './Main';
+import ParticleSettings from './ParticleSettings';
 
 class App extends Component{
-    async UNSAFE_componentWillMount(){
+    async componentWillMount(){
         await this.loadWeb3();
         await this.loadBlockchainData()
     }
@@ -71,6 +72,25 @@ class App extends Component{
         this.setState({loading: false})
     }
 
+    //Leveraging the Functions from Decentral Bank Contract i.e. Deposit Tokens and Unstaking Tokens
+    //Staking Token Function
+    stakeTokens = (amount) =>{
+        this.setState({loading: true})
+        this.state.tether.methods.approve(this.state.decentalBank._address, amount).send({from: this.state.account}).on('tracactionHash', (hash) =>{
+            this.state.decentalBank.methods.depositTokens(amount).send({from: this.state.account}).on('transactionHash', (hash) => {
+                this.setState({loading: false})
+            })
+        })
+    }
+    
+    //Unstaking Token Function
+    unstakeTokens = () =>{
+        this.setState({loading: true})
+        this.state.decentalBank.methods.unstakeTokens().send({from: this.state.account}).on('transactionHash', (hash) =>{
+            this.setState({loading: false})
+        })
+    }
+
     constructor(props){
         super(props)
         this.state = {
@@ -88,9 +108,12 @@ class App extends Component{
     //React Code
     render(){
         let content
-        {this.state.loading ? content = <p id='loader' className='text-center' style={{margin:'30px'}}>LOADING...</p>: content = <Main tetherBalance ={this.state.tetherBalance} rwdBalance ={this.state.rwdBalance} stakingBalance ={this.state.stakingBalance} />}
+        {this.state.loading ? content = <p id='loader' className='text-center' style={{margin:'30px', color:'white'}}>LOADING...</p>: content = <Main tetherBalance ={this.state.tetherBalance} rwdBalance ={this.state.rwdBalance} stakingBalance ={this.state.stakingBalance} stakeTokens ={this.stakeTokens} unstakeTokens={this.unstakeTokens} />}
         return(
-            <div>
+            <div className='App' style={{position: 'relative'}}>
+                <div style={{position: 'absolute'}}>
+                    <ParticleSettings />
+                </div>
                 <Navbar account={this.state.account}/>
                 <div className='container-fluid mt-5'>
                     <div className="row">
