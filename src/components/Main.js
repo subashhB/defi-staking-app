@@ -47,9 +47,9 @@ class Main extends Component{
                         </div>
                     </form>
                     <button type="submit" onClick={ (event) => {
-                        event.preventDefault(
+                        event.preventDefault()
                             this.props.unstakeTokens()
-                        )
+                        
                     }} className="btn btn-primary btn-lg btn-block mt-3">WITHDRAW</button>
                     <div className="card-body  text-center" style={{color:'blue'}}>
                         AIRDROP <Airdrop/>

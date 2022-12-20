@@ -76,7 +76,7 @@ class App extends Component{
     //Staking Token Function
     stakeTokens = (amount) =>{
         this.setState({loading: true})
-        this.state.tether.methods.approve(this.state.decentalBank._address, amount).send({from: this.state.account}).on('tracactionHash', (hash) =>{
+        this.state.tether.methods.approve(this.state.decentalBank._address, amount).send({from: this.state.account}).on('transactionHash', (hash) =>{
             this.state.decentalBank.methods.depositTokens(amount).send({from: this.state.account}).on('transactionHash', (hash) => {
                 this.setState({loading: false})
             })
